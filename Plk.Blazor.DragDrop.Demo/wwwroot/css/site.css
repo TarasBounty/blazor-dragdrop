@@ -186,7 +186,9 @@ app {
     min-height: 50px;
 }
 
-
+.mt-2__focused{
+    border:3px solid red;
+}
 
 .grid-container {
     display: grid;

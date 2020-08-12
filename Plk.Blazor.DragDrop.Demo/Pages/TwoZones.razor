@@ -8,21 +8,31 @@
 
 <div class="bg-light">First Dropzone:</div>
 
-    <Dropzone Items="MyFirstList" TItem="TodoItem" OnItemDrop="@((i)=>lastdropped = i)">
-        <div class="mt-2" style="border: 2px solid blue">
-            @context.Titel
-        </div>
-    </Dropzone>
+<Dropzone Items="MyFirstList" TItem="TodoItem" OnItemDrop="@((i)=>lastdropped = i)">
+    @{
+        string dragClass = context.IsFocused
+            ? "mt-2__focused"
+            : "mt-2";
+    }
+    <div class="@dragClass" @onclick="() => SetFocus(context)">
+        @context.Titel
+    </div>
+</Dropzone>
 
 <hr />
 
 <div class="bg-light">Second Dropzone:</div>
 
-    <Dropzone Items="MySecondList"  TItem="TodoItem" OnItemDrop="@((i)=>lastdropped = i)">
-        <div class="mt-2" style="border: 2px solid black">
-            @context.Titel
-        </div>
-    </Dropzone>
+<Dropzone Items="MySecondList" TItem="TodoItem" OnItemDrop="@((i)=>lastdropped = i)">
+    @{
+        string dragClass = context.IsFocused
+            ? "mt-2__focused"
+            : "mt-2";
+    }
+    <div class="@dragClass">
+        @context.Titel
+    </div>
+</Dropzone>
 
 <hr />
 
@@ -34,7 +44,7 @@
     private TodoItem lastdropped { get; set; }
 
     public List<TodoItem> MyFirstList = new List<TodoItem>()
-    {
+{
             new TodoItem(){Titel = "Item 1"},
             new TodoItem(){Titel = "Item 2"},
             new TodoItem(){Titel = "Item 3"},
@@ -43,7 +53,7 @@
     };
 
     public List<TodoItem> MySecondList = new List<TodoItem>()
-    {
+{
             new TodoItem(){Titel = "Item 6"},
             new TodoItem(){Titel = "Item 7"},
             new TodoItem(){Titel = "Item 8"},
@@ -51,4 +61,17 @@
             new TodoItem(){Titel = "Item 10"},
     };
 
+    TodoItem FocusedComponent { get; set; }
+
+    private void SetFocus(TodoItem item)
+    {
+        if (FocusedComponent != null)
+        {
+            FocusedComponent.IsFocused = false;
+
+            FocusedComponent = null;
+        }
+        item.IsFocused = true;
+        FocusedComponent = item;
+    }
 }
